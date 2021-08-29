@@ -12,13 +12,27 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Post {
-  id    String @id @default(uuid())
-  title String
-  text  String
+model Team {
+  id           String @id @default(uuid())
+  name         String
+  // comma separated list of participants
+  participants String
 
-  // To return `Date`s intact through the API we need to add data transformers
-  // https://trpc.io/docs/data-transformers
-  // createdAt DateTime @unique @default(now())
-  // updatedAt DateTime @unique @default(now())
+  group   TeamGroup @relation(fields: [groupId], references: [id])
+  groupId String
+
+  // optional team captain
+  captain String?
+
+  createdAt DateTime @unique @default(now())
+  updatedAt DateTime @unique @default(now())
+}
+
+model TeamGroup {
+  id   String @id @default(uuid())
+  name String
+
+  createdAt DateTime @unique @default(now())
+  updatedAt DateTime @unique @default(now())
+  Team      Team[]
 }

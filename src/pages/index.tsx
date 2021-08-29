@@ -18,17 +18,12 @@ export default function IndexPage() {
   return (
     <>
       <Head>
-        <title>Prisma Starter</title>
+        <title>Tiimit</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1>Welcome to your tRPC starter!</h1>
-      <p>
-        Check <a href="https://trpc.io/docs">the docs</a> whenever you get
-        stuck, or ping <a href="https://twitter.com/alexdotjs">@alexdotjs</a> on
-        Twitter.
-      </p>
+      <h1>Tiimit</h1>
       <h2>
-        Posts
+        Sinun tiimit
         {postsQuery.status === 'loading' && '(loading)'}
       </h2>
       {postsQuery.data?.map((item) => (
@@ -105,9 +100,9 @@ export default function IndexPage() {
 //     router: appRouter,
 //     ctx: await createContext(),
 //   });
-//
+
 //   await ssg.fetchQuery('post.all');
-//
+
 //   return {
 //     props: {
 //       trpcState: ssg.dehydrate(),
