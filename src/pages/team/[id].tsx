@@ -1,5 +1,5 @@
 import { useRouter } from 'next/dist/client/router';
-import { trpc } from 'utils/trpc';
+import { trpc } from '../../utils/trpc';
 import NextError from 'next/error';
 
 export default function PostViewPage() {

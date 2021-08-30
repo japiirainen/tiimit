@@ -1,19 +1,16 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { trpc } from '../utils/trpc';
 import { supabase } from '../utils/supabase';
-
-async function signInWithGoogle() {
-  return await supabase.auth.signIn({
-    provider: 'google',
-  });
-}
-async function signout() {
-  const { error } = await supabase.auth.signOut();
-}
+import { useAuth } from './hooks/useAuth';
+import { FcGoogle } from 'react-icons/fc';
+import { Box, Icon, Flex, Button, Heading, Link } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { User } from '@supabase/supabase-js';
+import { Auth, HelloUser, SignOutButton } from '../components/Auth';
 
 export default function IndexPage() {
+  const { signOut, user } = useAuth();
   // const postsQuery = trpc.useQuery(['post.all']);
   // const addPost = trpc.useMutation('post.add');
   // const utils = trpc.useContext();
@@ -24,8 +21,6 @@ export default function IndexPage() {
   //     utils.prefetchQuery(['post.byId', post.id]);
   //   });
   // }, [postsQuery.data, utils]);
-  const user = supabase.auth.user();
-  console.log(user);
 
   return (
     <>
@@ -33,62 +28,19 @@ export default function IndexPage() {
         <title>Tiimit</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1>Tiimit</h1>
-      <h2>Sinun tiimit</h2>
-
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          /**
-           * In a real app you probably don't want to use this manually
-           * Checkout React Hook Form - it works great with tRPC
-           * @link https://react-hook-form.com/
-           */
-
-          const $email: HTMLInputElement = (e as any).target.elements.email;
-          try {
-            const data = await signInWithGoogle();
-            console.log('got auth data', data);
-          } catch (e) {
-            console.error(e);
-          }
-        }}
-      >
-        <label htmlFor="title">Email:</label>
-        <br />
-        <input id="email" name="email" type="text" />
-        <button type="submit">submit</button>
-      </form>
-
+      <Box pos="fixed" w="100%" h="100%" backgroundColor="blackAlpha.900">
+        <SignOutButton />
+        <HelloUser />
+        <Flex justify="center" flexDir="row" width="100%">
+          <Heading textAlign="center" size="3xl" color="whiteAlpha.800">
+            Tiimit
+          </Heading>
+        </Flex>
+        {user === null ? <Auth /> : <>{JSON.stringify(user, null, 2)}</>}
+      </Box>
       {process.env.NODE_ENV !== 'production' && (
         <ReactQueryDevtools initialIsOpen={false} />
       )}
     </>
   );
 }
-
-/**
- * If you want to statically render this page
- * - Export `appRouter` & `createContext` from [trpc].ts
- * - Make the `opts` object optional on `createContext()`
- *
- * @link https://trpc.io/docs/ssg
- */
-// export const getStaticProps = async (
-//   context: GetStaticPropsContext<{ filter: string }>,
-// ) => {
-//   const ssg = createSSGHelpers({
-//     router: appRouter,
-//     ctx: await createContext(),
-//   });
-
-//   await ssg.fetchQuery('post.all');
-
-//   return {
-//     props: {
-//       trpcState: ssg.dehydrate(),
-//       filter: context.params?.filter ?? 'all',
-//     },
-//     revalidate: 1,
-//   };
-// };

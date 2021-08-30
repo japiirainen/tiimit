@@ -3,13 +3,14 @@ import { loggerLink } from '@trpc/client/links/loggerLink';
 import { withTRPC } from '@trpc/next';
 import { AppType } from 'next/dist/shared/lib/utils';
 import { AppRouter } from 'server/routers/app';
+import { ChakraProvider, theme } from '@chakra-ui/react';
 import superjson from 'superjson';
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <>
+    <ChakraProvider theme={theme}>
       <Component {...pageProps} />
-    </>
+    </ChakraProvider>
   );
 };
 

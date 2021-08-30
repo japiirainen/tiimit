@@ -29,6 +29,9 @@
     "singleQuote": true
   },
   "dependencies": {
+    "@chakra-ui/react": "^1.6.7",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
     "@prisma/client": "^2.18.0",
     "@supabase/supabase-js": "^1.22.4",
     "@trpc/client": "^9.0.0",
@@ -37,9 +40,11 @@
     "@trpc/server": "^9.0.0",
     "clsx": "^1.1.1",
     "devalue": "^2.0.1",
+    "framer-motion": "^4",
     "next": "^11.1.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-icons": "^4.2.0",
     "react-query": "^3.6.0",
     "start-server-and-test": "^1.12.0",
     "superjson": "^1.7.4",

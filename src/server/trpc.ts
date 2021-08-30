@@ -24,6 +24,7 @@ export const createContext = async ({
     req,
     res,
     prisma,
+    headers: req.headers,
   };
 };
 

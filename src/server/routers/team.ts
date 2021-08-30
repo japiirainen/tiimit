@@ -1,7 +1,7 @@
 import { createRouter } from 'server/trpc';
 import { z } from 'zod';
 
-export const teamRouter = createRouter().mutation('add', {
+export const teamRouter = createRouter().mutation('.add', {
   input: z.object({
     id: z.string().uuid().optional(),
     name: z.string().nonempty(),
