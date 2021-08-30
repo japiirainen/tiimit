@@ -13,10 +13,9 @@ generator client {
 }
 
 model Team {
-  id           String @id @default(uuid())
+  id           String   @id @default(uuid())
   name         String
-  // comma separated list of participants
-  participants String
+  participants String[]
 
   group   TeamGroup @relation(fields: [groupId], references: [id])
   groupId String

@@ -1,9 +1,7 @@
-/**
- * This file contains the root router of your tRPC-backend
- */
-import { transformer } from 'utils/trpc';
 import { createRouter } from '../trpc';
-import { postRouter } from './post';
+import { teamGroupRouter } from './teamGroup';
+import { teamRouter } from './team';
+import superjson from 'superjson';
 
 /**
  * Create your application's root router
@@ -16,12 +14,14 @@ export const appRouter = createRouter()
    * Add data transformers
    * @link https://trpc.io/docs/data-transformers
    */
-  .transformer(transformer)
+  .transformer(superjson)
   /**
    * Optionally do custom error (type safe!) formatting
    * @link https://trpc.io/docs/error-formatting
    */
   // .formatError(({ shape, error }) => { })
-  .merge('post.', postRouter);
+  // .merge('post.', postRouter)
+  .merge('teamGroup', teamGroupRouter)
+  .merge('team', teamRouter);
 
 export type AppRouter = typeof appRouter;

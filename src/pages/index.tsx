@@ -2,11 +2,21 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { trpc } from '../utils/trpc';
+import { supabase } from '../utils/supabase';
+
+async function signInWithGoogle() {
+  return await supabase.auth.signIn({
+    provider: 'google',
+  });
+}
+async function signout() {
+  const { error } = await supabase.auth.signOut();
+}
 
 export default function IndexPage() {
-  const postsQuery = trpc.useQuery(['post.all']);
-  const addPost = trpc.useMutation('post.add');
-  const utils = trpc.useContext();
+  // const postsQuery = trpc.useQuery(['post.all']);
+  // const addPost = trpc.useMutation('post.add');
+  // const utils = trpc.useContext();
 
   // prefetch all posts for instant navigation
   // useEffect(() => {
@@ -14,6 +24,8 @@ export default function IndexPage() {
   //     utils.prefetchQuery(['post.byId', post.id]);
   //   });
   // }, [postsQuery.data, utils]);
+  const user = supabase.auth.user();
+  console.log(user);
 
   return (
     <>
@@ -22,18 +34,7 @@ export default function IndexPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1>Tiimit</h1>
-      <h2>
-        Sinun tiimit
-        {postsQuery.status === 'loading' && '(loading)'}
-      </h2>
-      {postsQuery.data?.map((item) => (
-        <article key={item.id}>
-          <h3>{item.title}</h3>
-          <Link href={`/post/${item.id}`}>
-            <a>View more</a>
-          </Link>
-        </article>
-      ))}
+      <h2>Sinun tiimit</h2>
 
       <form
         onSubmit={async (e) => {
@@ -44,39 +45,19 @@ export default function IndexPage() {
            * @link https://react-hook-form.com/
            */
 
-          const $text: HTMLInputElement = (e as any).target.elements.text;
-          const $title: HTMLInputElement = (e as any).target.elements.title;
-          const input = {
-            title: $title.value,
-            text: $text.value,
-          };
+          const $email: HTMLInputElement = (e as any).target.elements.email;
           try {
-            await addPost.mutateAsync(input);
-            utils.invalidateQuery(['post.all']);
-
-            $title.value = '';
-            $text.value = '';
-          } catch {}
+            const data = await signInWithGoogle();
+            console.log('got auth data', data);
+          } catch (e) {
+            console.error(e);
+          }
         }}
       >
-        <label htmlFor="title">Title:</label>
+        <label htmlFor="title">Email:</label>
         <br />
-        <input
-          id="title"
-          name="title"
-          type="text"
-          disabled={addPost.isLoading}
-        />
-
-        <br />
-        <label htmlFor="text">Text:</label>
-        <br />
-        <textarea id="text" name="text" disabled={addPost.isLoading} />
-        <br />
-        <input type="submit" disabled={addPost.isLoading} />
-        {addPost.error && (
-          <p style={{ color: 'red' }}>{addPost.error.message}</p>
-        )}
+        <input id="email" name="email" type="text" />
+        <button type="submit">submit</button>
       </form>
 
       {process.env.NODE_ENV !== 'production' && (
