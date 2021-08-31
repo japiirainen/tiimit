@@ -5,7 +5,7 @@ export const teamRouter = createRouter().mutation('.add', {
   input: z.object({
     id: z.string().uuid().optional(),
     name: z.string().nonempty(),
-    participants: z.array(z.string().nonempty()).nonempty(),
+    participants: z.array(z.string().nonempty()),
     groupId: z.string().uuid(),
     captain: z.string().nonempty().optional(),
   }),

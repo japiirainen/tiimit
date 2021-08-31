@@ -30,4 +30,16 @@ export const teamGroupRouter = createRouter()
     async resolve({ ctx }) {
       return ctx.prisma.teamGroup.findMany();
     },
+  })
+  .query('.byId', {
+    input: z.object({
+      id: z.string().uuid(),
+    }),
+    async resolve({ ctx, input }) {
+      return await ctx.prisma.teamGroup.findFirst({
+        where: {
+          id: input.id,
+        },
+      });
+    },
   });
