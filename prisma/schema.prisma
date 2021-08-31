@@ -31,6 +31,8 @@ model TeamGroup {
   id   String @id @default(uuid())
   name String
 
+  owner String?
+
   createdAt DateTime @unique @default(now())
   updatedAt DateTime @unique @default(now())
   Team      Team[]

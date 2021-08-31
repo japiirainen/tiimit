@@ -1,26 +1,14 @@
 import Head from 'next/head';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { trpc } from '../utils/trpc';
-import { supabase } from '../utils/supabase';
 import { useAuth } from './hooks/useAuth';
-import { FcGoogle } from 'react-icons/fc';
-import { Box, Icon, Flex, Button, Heading, Link } from '@chakra-ui/react';
+import { Box, Flex, Button, Heading, Link, Input } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { User } from '@supabase/supabase-js';
 import { Auth, HelloUser, SignOutButton } from '../components/Auth';
+import { User } from '@supabase/supabase-js';
 
 export default function IndexPage() {
-  const { signOut, user } = useAuth();
-  // const postsQuery = trpc.useQuery(['post.all']);
-  // const addPost = trpc.useMutation('post.add');
-  // const utils = trpc.useContext();
-
-  // prefetch all posts for instant navigation
-  // useEffect(() => {
-  //   postsQuery.data?.forEach((post) => {
-  //     utils.prefetchQuery(['post.byId', post.id]);
-  //   });
-  // }, [postsQuery.data, utils]);
+  const { user } = useAuth();
 
   return (
     <>
@@ -36,7 +24,18 @@ export default function IndexPage() {
             Tiimit
           </Heading>
         </Flex>
-        {user === null ? <Auth /> : <>{JSON.stringify(user, null, 2)}</>}
+        <Box mt={20}>
+          {user === null ? (
+            <Auth />
+          ) : (
+            <>
+              <YourTeams user={user} />
+              <Box mt={20} w={'50%'}>
+                <NewTeamGroup user={user} />
+              </Box>
+            </>
+          )}
+        </Box>
       </Box>
       {process.env.NODE_ENV !== 'production' && (
         <ReactQueryDevtools initialIsOpen={false} />
@@ -44,3 +43,60 @@ export default function IndexPage() {
     </>
   );
 }
+
+type UserProps = {
+  user: User;
+};
+
+const YourTeams: React.FC<UserProps> = ({ user }) => {
+  const { data } = trpc.useQuery([
+    'teamGroup.user.all',
+    {
+      userId: user?.id ?? null,
+    },
+  ]);
+
+  if (!data || data.length === 0) {
+    return <Heading color="whiteAlpha.800">Sinulla ei ole tiimejä</Heading>;
+  }
+  return (
+    <Box>
+      <Heading color="whiteAlpha.800">Sinun tiimit</Heading>
+      {data?.map((team) => (
+        <Box key={team.id}>
+          <Link color="whiteAlpha.800">{team.name}</Link>
+        </Box>
+      ))}
+    </Box>
+  );
+};
+
+const NewTeamGroup: React.FC<UserProps> = ({ user }) => {
+  const [name, setName] = useState('');
+  const utils = trpc.useContext();
+  const addTg = trpc.useMutation('teamGroup.add');
+
+  return (
+    <Flex flexDir="row">
+      <Input
+        color="whiteAlpha.800"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <Button
+        onClick={() =>
+          addTg.mutate(
+            { name, owner: user.id },
+            {
+              onSuccess: () => {
+                return utils.invalidateQuery(['teamGroup.user.all']);
+              },
+            },
+          )
+        }
+      >
+        Luo uusi
+      </Button>
+    </Flex>
+  );
+};

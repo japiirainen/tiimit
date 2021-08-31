@@ -2,7 +2,7 @@
 CREATE TABLE "Team" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "participants" TEXT NOT NULL,
+    "participants" TEXT[],
     "groupId" TEXT NOT NULL,
     "captain" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -15,6 +15,7 @@ CREATE TABLE "Team" (
 CREATE TABLE "TeamGroup" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "owner" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -26,6 +27,9 @@ CREATE UNIQUE INDEX "Team.createdAt_unique" ON "Team"("createdAt");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Team.updatedAt_unique" ON "Team"("updatedAt");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "TeamGroup.owner_unique" ON "TeamGroup"("owner");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "TeamGroup.createdAt_unique" ON "TeamGroup"("createdAt");
