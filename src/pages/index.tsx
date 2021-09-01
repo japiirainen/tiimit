@@ -2,9 +2,10 @@ import Head from 'next/head';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { range, pipe, mapWithIndex } from 'iiris';
 import { trpc } from '../utils/trpc';
-import { useAuth } from './hooks/useAuth';
+import { useAuth } from '../hooks/useAuth';
 import {
   Box,
+  Icon,
   Flex,
   Button,
   Heading,
@@ -31,9 +32,12 @@ import React, { useState } from 'react';
 import { Auth, HelloUser, SignOutButton } from '../components/Auth';
 import { User } from '@supabase/supabase-js';
 import { useRouter } from 'next/dist/client/router';
-import { useEffect } from 'react';
-import { FcPlus } from 'react-icons/fc';
-import { BiPlus } from 'react-icons/bi';
+import {
+  BiArrowToRight,
+  BiPlus,
+  BiRightArrow,
+  BiRightArrowAlt,
+} from 'react-icons/bi';
 
 export const PageWrapper: React.FC = ({ children }) => {
   return (
@@ -107,16 +111,26 @@ const YourTeams: React.FC<UserProps> = ({ user }) => {
         <Heading color="whiteAlpha.800">Sinulla ei ole tiimejä</Heading>
       ) : (
         <>
-          <Heading color="whiteAlpha.800">Sinun tiimit</Heading>
+          <Heading mb="4" color="whiteAlpha.800">
+            Sinun tiimit
+          </Heading>
           {data?.map((tg) => (
-            <Box key={tg.id}>
+            <Flex key={tg.id} justifyContent="start" alignItems="center">
               <Link
+                fontSize="2xl"
                 onClick={() => router.push(`/teamGroup/${tg.id}`)}
                 color="whiteAlpha.800"
               >
                 {tg.name}
               </Link>
-            </Box>
+              <Icon
+                ml="2"
+                color="whiteAlpha.800"
+                w="6"
+                h="6"
+                as={BiRightArrowAlt}
+              />
+            </Flex>
           ))}
         </>
       )}
@@ -152,7 +166,7 @@ const NewTeamGroup: React.FC<UserProps> = ({ user }) => {
 
   return (
     <>
-      <Button colorScheme="whiteAlpha" onClick={onOpen}>
+      <Button leftIcon={<BiPlus />} colorScheme="whiteAlpha" onClick={onOpen}>
         Luo uusi
       </Button>
 

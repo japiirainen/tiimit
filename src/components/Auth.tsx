@@ -1,5 +1,5 @@
 import { Icon, Button, Flex, Text } from '@chakra-ui/react';
-import { useAuth } from 'pages/hooks/useAuth';
+import { useAuth } from 'hooks/useAuth';
 import { FcGoogle } from 'react-icons/fc';
 import { BiLogOut } from 'react-icons/bi';
 
