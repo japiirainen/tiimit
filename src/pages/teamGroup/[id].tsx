@@ -35,7 +35,12 @@ export default function PostViewPage() {
       <Heading color="whiteAlpha.800" textAlign="center">
         {tg.data?.name}
       </Heading>
-      <SimpleGrid columns={bp === 'sm' ? 1 : 2} spacing={10} px={2} mt="12">
+      <SimpleGrid
+        columns={bp === 'sm' || bp === 'base' ? 1 : 2}
+        spacing={10}
+        px={2}
+        mt="12"
+      >
         {teams.data
           ?.sort((a, b) => (a.id < b.id ? 1 : -1))
           .map((team) => (

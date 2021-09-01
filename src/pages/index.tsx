@@ -32,12 +32,7 @@ import React, { useState } from 'react';
 import { Auth, HelloUser, SignOutButton } from '../components/Auth';
 import { User } from '@supabase/supabase-js';
 import { useRouter } from 'next/dist/client/router';
-import {
-  BiArrowToRight,
-  BiPlus,
-  BiRightArrow,
-  BiRightArrowAlt,
-} from 'react-icons/bi';
+import { BiPlus, BiRightArrowAlt } from 'react-icons/bi';
 
 export const PageWrapper: React.FC = ({ children }) => {
   return (
@@ -108,11 +103,11 @@ const YourTeams: React.FC<UserProps> = ({ user }) => {
   return (
     <Flex w="100%" flexDir="column">
       {!data || data.length === 0 ? (
-        <Heading color="whiteAlpha.800">Sinulla ei ole tiimejä</Heading>
+        <Heading color="whiteAlpha.800">Sinulla ei ole pelit</Heading>
       ) : (
         <>
           <Heading mb="4" color="whiteAlpha.800">
-            Sinun tiimit
+            Sinun pelit
           </Heading>
           {data?.map((tg) => (
             <Flex key={tg.id} justifyContent="start" alignItems="center">
@@ -179,7 +174,7 @@ const NewTeamGroup: React.FC<UserProps> = ({ user }) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Luo uusi tiimi</ModalHeader>
+          <ModalHeader>Luo uusi peli</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormLabel>Nimi</FormLabel>
@@ -230,7 +225,6 @@ const NewTeamGroup: React.FC<UserProps> = ({ user }) => {
               colorScheme="blackAlpha"
               onClick={() => {
                 const teams = makeTeams(participants, numTeams);
-                console.log(teams);
                 addTg.mutate(
                   { name, owner: user.id },
                   {
@@ -252,7 +246,7 @@ const NewTeamGroup: React.FC<UserProps> = ({ user }) => {
                 );
               }}
             >
-              Luo tiimi
+              Luo peli ja generoi tiimit
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -265,17 +259,41 @@ const makeTeams = (
   participants: string[],
   numTeams: number,
 ): { name: string; participants: string[] }[] => {
-  const ps = chunkArray(participants, numTeams);
+  const shuffledPs = pipe(participants, shuffle, chunk(numTeams));
+  console.log('shuffled', shuffledPs);
   return pipe(
-    range(1, numTeams + 1),
-    mapWithIndex((_, i) => ({
-      name: `Tiimi ${_}`,
-      participants: ps[i - 1],
+    range(0, numTeams),
+    mapWithIndex((i, p) => ({
+      name: `Tiimi ${i}`,
+      participants: shuffledPs[p],
     })),
   );
 };
 
-const chunkArray = <T,>(arr: T[], size: number): T[][] =>
-  arr.length > size
-    ? [arr.slice(0, size), ...chunkArray(arr.slice(size), size)]
-    : [arr];
+const chunk =
+  (chunks: number) =>
+  <T,>(arr: T[]): T[][] =>
+    arr.reduce((acc, item, index) => {
+      acc[index % chunks].push(item);
+      return acc;
+    }, Array.from(Array(chunks), () => []) as T[][]);
+
+function shuffle<T>(array: T[]) {
+  let currentIndex = array.length,
+    randomIndex;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
+}

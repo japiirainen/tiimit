@@ -1,5 +1,6 @@
 # Tiimit
-Aplikaatio tiimien arpomiseen.
+
+Nopea ja likainen toteutus webbi aplikaatiosta, joka arpoo joukkueet ryhmästä ihmisiä.
 ## Commands
 
 ```bash

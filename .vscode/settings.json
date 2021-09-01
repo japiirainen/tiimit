@@ -1,4 +1,23 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
-  "cSpell.words": ["bahmutov", "kapteeniksi", "takaisin", "trpcdb", "Ylennä"]
+  "cSpell.words": [
+    "aplikaatiosta",
+    "arpoo",
+    "bahmutov",
+    "generoi",
+    "ihmisiä",
+    "joka",
+    "joukkueet",
+    "kapteeniksi",
+    "likainen",
+    "Nopea",
+    "peli",
+    "pelit",
+    "ryhmästä",
+    "takaisin",
+    "toteutus",
+    "trpcdb",
+    "webbi",
+    "Ylennä"
+  ]
 }
