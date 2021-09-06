@@ -33,6 +33,7 @@ import { Auth, HelloUser, SignOutButton } from '../components/Auth';
 import { User } from '@supabase/supabase-js';
 import { useRouter } from 'next/dist/client/router';
 import { BiPlus, BiRightArrowAlt } from 'react-icons/bi';
+import { IsFetchingSpinner } from 'components/IsFetchingSpinner';
 
 export const PageWrapper: React.FC = ({ children }) => {
   return (
@@ -41,13 +42,18 @@ export const PageWrapper: React.FC = ({ children }) => {
         <title>Tiimit</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {children}
+      <Box>
+        <IsFetchingSpinner />
+        {children}
+      </Box>
     </>
   );
 };
 
 export default function IndexPage() {
   const { user } = useAuth();
+
+  const {} = trpc.useQuery(['teamGroup.all']);
 
   return (
     <PageWrapper>
