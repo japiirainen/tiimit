@@ -25,16 +25,10 @@ export default function PostViewPage() {
 
   return (
     <PageWrapper>
-      <Button
-        colorScheme="whiteAlpha"
-        leftIcon={<BiArrowBack />}
-        onClick={() => router.push('/')}
-      >
+      <Button leftIcon={<BiArrowBack />} onClick={() => router.push('/')}>
         takaisin
       </Button>
-      <Heading color="whiteAlpha.800" textAlign="center">
-        {tg.data?.name}
-      </Heading>
+      <Heading textAlign="center">{tg.data?.name}</Heading>
       <SimpleGrid
         columns={bp === 'sm' || bp === 'base' ? 1 : 2}
         spacing={10}
@@ -44,16 +38,8 @@ export default function PostViewPage() {
         {teams.data
           ?.sort((a, b) => (a.id < b.id ? 1 : -1))
           .map((team) => (
-            <Flex
-              key={team.id}
-              border="1px"
-              borderColor="whiteAlpha.500"
-              p={5}
-              flexDir="column"
-            >
-              <Heading color="whiteAlpha.800" textAlign="center">
-                {team.name}
-              </Heading>
+            <Flex key={team.id} border="1px" p={5} flexDir="column">
+              <Heading textAlign="center">{team.name}</Heading>
               {team.participants
                 .sort((a, b) => {
                   if (a === team.captain) return -1;
@@ -65,13 +51,10 @@ export default function PostViewPage() {
                     {p === team.captain ? (
                       <Icon color="gold" w="8" h="8" as={BiCrown} mr="2" />
                     ) : null}
-                    <Text color="whiteAlpha.800" fontSize="2xl">
-                      {p}
-                    </Text>
+                    <Text fontSize="2xl">{p}</Text>
                     <Tooltip label="Ylennä kapteeniksi">
                       <IconButton
                         aria-label="crown-button"
-                        colorScheme="whiteAlpha"
                         icon={<BiCrown />}
                         ml="auto"
                         onClick={() =>

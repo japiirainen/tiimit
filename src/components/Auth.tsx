@@ -9,7 +9,6 @@ export const Auth = () => {
   return (
     <Flex flexDir="column" align="center" mt="20">
       <Button
-        colorScheme="whiteAlpha"
         size="lg"
         w={400}
         maxW="80%"
@@ -30,7 +29,6 @@ export const SignOutButton = () => {
     <Button
       position="absolute"
       right={0}
-      colorScheme="whiteAlpha"
       size="sm"
       rightIcon={<Icon as={BiLogOut} />}
       onClick={signOut}
@@ -43,7 +41,5 @@ export const SignOutButton = () => {
 export const HelloUser = () => {
   const { user } = useAuth();
   if (!user) return null;
-  return (
-    <Text color="whiteAlpha.800">Terve {user?.user_metadata.full_name}</Text>
-  );
+  return <Text>Terve {user?.user_metadata.full_name}</Text>;
 };

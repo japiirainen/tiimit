@@ -41,9 +41,7 @@ export const PageWrapper: React.FC = ({ children }) => {
         <title>Tiimit</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Box pos="fixed" w="100%" h="100%" backgroundColor="blackAlpha.900">
-        {children}
-      </Box>
+      {children}
     </>
   );
 };
@@ -56,7 +54,7 @@ export default function IndexPage() {
       <SignOutButton />
       <HelloUser />
       <Flex justify="center" flexDir="row" width="100%">
-        <Heading textAlign="center" size="3xl" color="whiteAlpha.800">
+        <Heading textAlign="center" size="3xl">
           Tiimit
         </Heading>
       </Flex>
@@ -103,28 +101,19 @@ const YourTeams: React.FC<UserProps> = ({ user }) => {
   return (
     <Flex w="100%" flexDir="column">
       {!data || data.length === 0 ? (
-        <Heading color="whiteAlpha.800">Sinulla ei ole pelit</Heading>
+        <Heading>Sinulla ei ole pelit</Heading>
       ) : (
         <>
-          <Heading mb="4" color="whiteAlpha.800">
-            Sinun pelit
-          </Heading>
+          <Heading mb="4">Sinun pelit</Heading>
           {data?.map((tg) => (
             <Flex key={tg.id} justifyContent="start" alignItems="center">
               <Link
                 fontSize="2xl"
                 onClick={() => router.push(`/teamGroup/${tg.id}`)}
-                color="whiteAlpha.800"
               >
                 {tg.name}
               </Link>
-              <Icon
-                ml="2"
-                color="whiteAlpha.800"
-                w="6"
-                h="6"
-                as={BiRightArrowAlt}
-              />
+              <Icon ml="2" w="6" h="6" as={BiRightArrowAlt} />
             </Flex>
           ))}
         </>
@@ -178,15 +167,10 @@ const NewTeamGroup: React.FC<UserProps> = ({ user }) => {
           <ModalCloseButton />
           <ModalBody>
             <FormLabel>Nimi</FormLabel>
-            <Input
-              color="blackAlpha.700"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+            <Input value={name} onChange={(e) => setName(e.target.value)} />
             <FormLabel>Osallistujat</FormLabel>
             <Flex>
               <Input
-                color="blackAlpha.700"
                 value={participant}
                 onChange={(e) => setParticipant(e.target.value)}
                 onKeyPress={(e) => {
@@ -222,7 +206,6 @@ const NewTeamGroup: React.FC<UserProps> = ({ user }) => {
           </ModalBody>
           <ModalFooter>
             <Button
-              colorScheme="blackAlpha"
               onClick={() => {
                 const teams = makeTeams(participants, numTeams);
                 addTg.mutate(
@@ -260,7 +243,6 @@ const makeTeams = (
   numTeams: number,
 ): { name: string; participants: string[] }[] => {
   const shuffledPs = pipe(participants, shuffle, chunk(numTeams));
-  console.log('shuffled', shuffledPs);
   return pipe(
     range(0, numTeams),
     mapWithIndex((i, p) => ({

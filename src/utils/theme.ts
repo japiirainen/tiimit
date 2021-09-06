@@ -1,4 +1,4 @@
-import { extendTheme } from '@chakra-ui/react';
+import { extendTheme, ThemeConfig } from '@chakra-ui/react';
 
 const colors = {
   neonGreen: {
@@ -24,4 +24,9 @@ const fonts = {
   main: 'Ubuntu, monospace',
 };
 
-export const theme = extendTheme({ fonts, colors });
+const config: ThemeConfig = {
+  initialColorMode: 'dark',
+  useSystemColorMode: false,
+};
+
+export const theme = extendTheme({ fonts, colors, config });

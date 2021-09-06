@@ -3,8 +3,9 @@ import { loggerLink } from '@trpc/client/links/loggerLink';
 import { withTRPC } from '@trpc/next';
 import { AppType } from 'next/dist/shared/lib/utils';
 import { AppRouter } from 'server/routers/app';
-import { ChakraProvider, theme } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 import superjson from 'superjson';
+import { theme } from 'utils/theme';
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
