@@ -22,7 +22,7 @@ export const chunk =
       return acc;
     }, Array.from(Array(chunks), () => []) as T[][]);
 
-function shuffle<T>(array: T[]) {
+export function shuffle<T>(array: T[]) {
   let currentIndex = array.length,
     randomIndex;
 
