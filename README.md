@@ -3,7 +3,8 @@
 Nopea ja likainen toteutus webbi aplikaatiosta, joka arpoo joukkueet ryhmästä ihmisiä.
 
 ## TODO
-- fix logic for generating the teams, write some tests for that also. make styles at least bearable.
+- make styles at least bearable.
+- don't allow empty strings when adding participants to a new group.
 
 ## Commands
 
